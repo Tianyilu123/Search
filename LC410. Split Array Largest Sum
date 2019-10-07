@@ -1,0 +1,39 @@
+// template 3:
+
+class Solution {
+    public int splitArray(int[] nums, int m) {
+        int sum = 0;
+        int max = 0;
+        for(int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        if(m == 1) return sum;
+        if(m== nums.length) return max;
+        long left = max, right = sum;
+        while(left <= right) {
+            long mid = (right - left)/2 + left;
+            if(valid(mid, nums, m))
+                right = mid - 1;
+            else left = mid+1;
+        }
+        return (int) left;
+    }
+    
+    private boolean valid(long target, int[] nums, int m) {
+        int count = 1;
+        int sum = 0;
+        for(int num : nums) {
+            sum += num;
+            if(sum > target){
+                sum = num;
+                count++;
+                if(count > m) return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+// O(nlogn), O(1)
